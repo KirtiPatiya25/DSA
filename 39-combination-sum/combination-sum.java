@@ -8,12 +8,9 @@ class Solution {
         }
 
         ans.add(candidates[i]);
-
-        // combSum(candidates, i+1, ans, res, target-candidates[i]);
         combSum(candidates, i, ans, res, target-candidates[i]);
 
         ans.remove(ans.size() - 1);
-
         combSum(candidates, i+1, ans, res, target);
 
     }
