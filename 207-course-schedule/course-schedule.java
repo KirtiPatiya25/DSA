@@ -1,28 +1,40 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<List<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+        List<List<Integer>> graph = new ArrayList<>();
 
-        for (int[] pre : prerequisites)
-            adj.get(pre[1]).add(pre[0]);
+        for(int i = 0; i<numCourses; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int[] pre : prerequisites){
+            graph.get(pre[1]).add(pre[0]);
+        }
 
-        boolean[] vis = new boolean[numCourses];
-        boolean[] path = new boolean[numCourses];
+        int[] state = new int[numCourses];
 
-        for (int i = 0; i < numCourses; i++)
-            if (!vis[i] && dfs(i, adj, vis, path)) return false;
-
+        for(int i =0; i<numCourses; i++){
+            if(!dfs(i, graph, state)){
+                return false;
+            }
+        }
         return true;
     }
+    private boolean dfs(int course, List<List<Integer>> graph, int[] state){
 
-    private boolean dfs(int node, List<List<Integer>> adj, boolean[] vis, boolean[] path) {
-        vis[node] = path[node] = true;
+        if(state[course] == 1){
+            return false;
+        }
+        if(state[course] == 2){
+            return true;
+        }
 
-        for (int next : adj.get(node))
-            if (!vis[next] && dfs(next, adj, vis, path)) return true;
-            else if (path[next]) return true;
-            
-        path[node] = false;
-        return false;
+        state[course] = 1;
+
+        for(int next : graph.get(course)){
+            if(!dfs(next, graph, state)){
+                return false;
+            }
+        }
+        state[course] = 2;
+        return true;
     }
 }
