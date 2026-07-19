@@ -1,9 +1,10 @@
 class Solution {
     TreeNode prev = null;
     public int minDiffInBST(TreeNode root) {
-        
         if(root == null) return Integer.MAX_VALUE;
+
         int ans = Integer.MAX_VALUE;
+        
         if(root.left != null){
             int leftMin = minDiffInBST(root.left);
             ans = Math.min(ans, leftMin);
