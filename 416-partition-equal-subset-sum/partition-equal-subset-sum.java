@@ -1,31 +1,44 @@
 class Solution {
-    private boolean subset(int i, int[] arr, int target, int[][] dp){
-        if(i==arr.length){
-            if(target == 0) return true;
-            else return false;
+
+    private Boolean[][] dp;
+
+    private boolean subsets(int[] nums, int index, int target) {
+
+        if (target == 0) return true;
+
+        if (index >= nums.length || target < 0) {
+            return false;
         }
-        if(dp[i][target] != -1) return (dp[i][target]==1);
-        boolean ans = false; 
-        boolean skip = subset(i+1, arr, target, dp);
-        if(target-arr[i]<0) ans = skip;
-        else{
-            boolean pick = subset(i+1, arr,target-arr[i], dp);
-            ans = pick || skip;
+
+        if (dp[index][target] != null) {
+            return dp[index][target];
         }
-        dp[i][target] = (ans) ? 1:0;
-        return ans;
+
+        // Exclude current element
+        boolean exclude = subsets(nums, index + 1, target);
+
+        // Include current element
+        boolean include = subsets(nums, index + 1, target - nums[index]);
+
+        return dp[index][target] = include || exclude;
     }
+
     public boolean canPartition(int[] nums) {
-        int sum  = 0;
-        for(int ele: nums) sum += ele;
-        if(sum%2 != 0) return false;
-        int target = sum/2;
-        int[][] dp = new int[nums.length][target+1];
-        for(int i=0; i<dp.length; i++){
-            for(int j=0; j<dp[0].length; j++){
-                dp[i][j] = -1;
-            }
+
+        int sum = 0;
+
+        for (int x : nums) {
+            sum += x;
         }
-        return subset(0, nums, target, dp);
+
+        if (sum % 2 != 0) {
+            return false;
+        }
+
+        int target = sum / 2;
+
+        dp = new Boolean[nums.length][target + 1];
+
+        return subsets(nums, 0, target);
     }
 }
