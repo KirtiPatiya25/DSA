@@ -3,7 +3,7 @@ class Solution {
         if(i<0|| j<0 || i>=n || j>=m || visited[i][j] || grid[i][j] == '0' ){
             return;
         }
-        visited[i][j] = true;
+        visited[i][j] = true; 
 
         dfs(i-1, j, visited, grid, n, m); //top
         dfs(i, j+1, visited, grid, n, m); //right
